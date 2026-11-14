@@ -21,14 +21,14 @@ export default function CtaSection() {
   const nextTarget = !isDomainReady ? 'domain' : !isDesignReady ? 'katalog' : 'ringkasan'
 
   return (
-    <section className="bg-ink px-4 py-16 text-white sm:px-6 lg:px-8 lg:py-24">
+    <section className="bg-navy px-4 py-16 text-white sm:px-6 lg:px-8 lg:py-24">
       <div className="container-page">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] lg:items-end lg:gap-16">
           <div>
             <h2 className="max-w-2xl text-[30px] font-semibold leading-[1.1] tracking-[-0.022em] sm:text-[42px]">
               Website resmi bisnis Anda bisa online sebelum makan siang.
             </h2>
-            <p className="mt-5 max-w-xl text-[16px] leading-relaxed text-white/70">
+            <p className="mt-5 max-w-xl text-[16px] leading-relaxed text-silver">
               Pilih paket, kunci domain, tentukan tema, sisanya kami yang kerjakan. Tidak perlu tim
               IT, tidak perlu menunggu antrean pengembangan.
             </p>
@@ -81,7 +81,7 @@ export default function CtaSection() {
           {GUARANTEES.map(({ label, note }) => (
             <div key={label}>
               <dt className="text-[16px] font-semibold text-white">{label}</dt>
-              <dd className="mt-1 text-[14px] text-white/60">{note}</dd>
+              <dd className="mt-1 text-[14px] text-silver">{note}</dd>
             </div>
           ))}
         </dl>

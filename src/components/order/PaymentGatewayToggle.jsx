@@ -20,10 +20,10 @@ export default function PaymentGatewayToggle({ className = '', compact = false }
       aria-label={`Add-on ${PAYMENT_ADDON.label}`}
       data-payment-addon={includePaymentGateway ? 'on' : 'off'}
       onClick={togglePaymentGateway}
-      className={`group w-full rounded-xl border bg-white text-left transition-colors ${
+      className={`group w-full rounded-xl border text-left transition-colors ${
         compact ? 'p-4' : 'p-5 sm:p-6'
       } ${
-        includePaymentGateway ? 'border-ink ring-1 ring-ink' : 'border-line-strong hover:border-ink/40'
+        includePaymentGateway ? 'border-ink bg-brand-wash/50 ring-1 ring-ink' : 'border-line-strong bg-white hover:border-ink/40'
       } ${className}`}
     >
       <div className="flex items-start gap-4">
@@ -72,7 +72,7 @@ export default function PaymentGatewayToggle({ className = '', compact = false }
       <p
         data-payment-addon-note
         className={`mt-4 flex items-start gap-2 rounded-lg px-3 py-2.5 text-[13px] leading-snug ${
-          includePaymentGateway ? 'bg-brand-wash text-ink' : 'bg-wash text-body'
+          includePaymentGateway ? 'bg-white text-ink ring-1 ring-line' : 'bg-wash text-body'
         }`}
       >
         {includePaymentGateway ? (

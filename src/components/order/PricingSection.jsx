@@ -19,8 +19,8 @@ function PlanCard({ plan }) {
 
   return (
     <div
-      className={`relative flex flex-col rounded-xl border bg-white p-6 transition-colors ${
-        selected ? 'border-ink ring-1 ring-ink' : 'border-line-strong hover:border-ink/40'
+      className={`relative flex flex-col rounded-xl border p-6 transition-colors ${
+        selected ? 'border-ink bg-brand-wash/50 ring-1 ring-ink' : 'border-line-strong bg-white hover:border-ink/40'
       }`}
     >
       <button

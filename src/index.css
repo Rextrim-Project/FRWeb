@@ -15,16 +15,18 @@
   --color-indigo-glow: #6366f1;
 
   /* Landing: satu tinta, satu aksen, netral untuk sisanya. */
-  --color-ink: #0f1a2b;
-  --color-body: #3a4556;
-  --color-mute: #667085;
-  --color-faint: #98a1b2;
-  --color-line: #e5e8ee;
-  --color-line-strong: #cfd5df;
-  --color-wash: #f6f7f9;
-  --color-brand: #1b4fd8;
-  --color-brand-deep: #163fae;
-  --color-brand-wash: #eef3fe;
+  --color-ink: #0b1f44;
+  --color-body: #3b4a66;
+  --color-mute: #677590;
+  --color-faint: #9aa5ba;
+  --color-line: #e0e5ee;
+  --color-line-strong: #c6cfdd;
+  --color-wash: #f2f4f8;
+  --color-brand: #1e429f;
+  --color-brand-deep: #17347f;
+  --color-brand-wash: #e8edf7;
+  --color-navy: #081834;
+  --color-silver: #a9b8d6;
   --color-ok: #117a4d;
   --color-ok-wash: #eaf6f0;
   --color-warn: #8a5a00;
@@ -53,7 +55,7 @@
   }
 
   ::selection {
-    background: rgba(27, 79, 216, 0.22);
+    background: rgba(30, 66, 159, 0.2);
   }
 
   :focus-visible {
@@ -454,7 +456,7 @@
     @apply h-12 px-6 text-[15px];
   }
   .btn-primary {
-    @apply bg-ink text-white hover:bg-[#22314a];
+    @apply bg-ink text-white hover:bg-[#16326a];
   }
   .btn-secondary {
     @apply border border-line-strong bg-white text-ink hover:border-ink/40 hover:bg-wash;
@@ -473,7 +475,11 @@
     @apply mx-auto w-full max-w-7xl;
   }
   .eyebrow {
-    @apply text-[13px] font-medium text-mute;
+    @apply flex items-center gap-2.5 text-[13px] font-semibold text-brand;
+  }
+  .eyebrow::before {
+    content: "";
+    @apply h-px w-7 bg-brand;
   }
   .h2 {
     @apply text-[28px] leading-[1.12] font-semibold tracking-[-0.02em] text-ink sm:text-[36px];

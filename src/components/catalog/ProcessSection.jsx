@@ -51,7 +51,7 @@ export default function ProcessSection() {
           {STEPS.map(({ step, time, title, desc }) => (
             <li key={step} className="border-t-2 border-ink pt-4">
               <p className="flex items-baseline justify-between gap-3 font-mono text-[13px]">
-                <span className="font-medium text-ink">{step}</span>
+                <span className="font-semibold text-brand">{step}</span>
                 <span className="text-mute">{time}</span>
               </p>
               <h3 className="mt-4 text-[18px] font-semibold leading-snug text-ink">{title}</h3>

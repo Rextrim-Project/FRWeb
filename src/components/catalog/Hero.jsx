@@ -38,13 +38,14 @@ export default function Hero() {
   }
 
   return (
-    <section id="top" className="bg-white px-4 text-ink sm:px-6 lg:px-8">
+    <section id="top" className="bg-white text-ink">
+      <div className="border-b border-line bg-wash px-4 sm:px-6 lg:px-8">
       <div className="container-page grid items-center gap-12 pb-14 pt-10 sm:pt-14 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-16 lg:pb-20 lg:pt-20">
         <div className="min-w-0">
           <p className="text-[14px] font-medium text-brand">Website instan untuk pemilik bisnis</p>
 
           <h1 className="mt-4 text-[38px] font-semibold leading-[1.04] tracking-[-0.028em] text-ink sm:text-[52px] xl:text-[60px]">
-            Website bisnis Anda online dalam 30&nbsp;menit.
+            Website bisnis Anda online dalam <span className="text-brand">30&nbsp;menit.</span>
           </h1>
 
           <p className="mt-5 max-w-xl text-[16.5px] leading-relaxed text-body">
@@ -84,8 +85,10 @@ export default function Hero() {
           <HeroShowcase templates={SHOWCASE_TEMPLATES} onOpenFullscreen={openFullscreenPreview} />
         </div>
       </div>
+      </div>
 
-      <dl className="container-page grid grid-cols-2 gap-x-6 gap-y-6 border-t border-line py-8 lg:grid-cols-4">
+      <div className="px-4 sm:px-6 lg:px-8">
+      <dl className="container-page grid grid-cols-2 gap-x-6 gap-y-6 py-8 lg:grid-cols-4">
         {STATS.map((stat) => (
           <div key={stat.label}>
             <dt className="text-[14px] text-mute">{stat.label}</dt>
@@ -109,6 +112,7 @@ export default function Hero() {
           </p>
         </div>
         <Stepper />
+      </div>
       </div>
     </section>
   )

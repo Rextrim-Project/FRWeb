@@ -81,8 +81,8 @@ export default function CustomDesignForm() {
                   onClick={() => toggleCustomFeature(feature.id)}
                   aria-pressed={active}
                   data-feature-option={feature.id}
-                  className={`flex items-start gap-3 rounded-lg border bg-white p-3.5 text-left transition-colors ${
-                    active ? 'border-ink ring-1 ring-ink' : 'border-line-strong hover:border-ink/40'
+                  className={`flex items-start gap-3 rounded-lg border p-3.5 text-left transition-colors ${
+                    active ? 'border-ink bg-brand-wash/50 ring-1 ring-ink' : 'border-line-strong bg-white hover:border-ink/40'
                   }`}
                 >
                   <span

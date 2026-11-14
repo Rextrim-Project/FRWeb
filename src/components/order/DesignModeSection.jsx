@@ -15,8 +15,8 @@ function ModeTab({ active, disabled, title, meta, onClick, controls, id }) {
       aria-controls={controls}
       disabled={disabled}
       onClick={onClick}
-      className={`flex items-start gap-3 rounded-xl border bg-white p-4 text-left transition-colors sm:p-5 ${
-        active ? 'border-ink ring-1 ring-ink' : 'border-line-strong hover:border-ink/40'
+      className={`flex items-start gap-3 rounded-xl border p-4 text-left transition-colors sm:p-5 ${
+        active ? 'border-ink bg-brand-wash/50 ring-1 ring-ink' : 'border-line-strong bg-white hover:border-ink/40'
       } ${disabled ? 'cursor-not-allowed opacity-50 hover:border-line-strong' : ''}`}
     >
       <span
