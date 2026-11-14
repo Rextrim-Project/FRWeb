@@ -8,7 +8,7 @@ export default function Logo({ compact = false, onNavigate, tone = 'dark' }) {
       aria-label="FRWeb — kembali ke atas"
     >
       {light ? (
-        <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-[#0B1F3F] to-[#1E40AF] text-[13px] font-bold tracking-tight text-white">
+        <span className="grid h-8 w-8 place-items-center rounded-md bg-ink text-[12.5px] font-bold tracking-tight text-white">
           FR
         </span>
       ) : (
@@ -23,15 +23,17 @@ export default function Logo({ compact = false, onNavigate, tone = 'dark' }) {
       {!compact && (
         <span className="flex flex-col leading-none">
           <span
-            className={`text-[15px] tracking-tight ${
-              light ? 'font-semibold text-[#0B1F3F]' : 'font-extrabold text-white'
+            className={`tracking-tight ${
+              light ? 'text-[16px] font-semibold text-ink' : 'text-[15px] font-extrabold text-white'
             }`}
           >
             FR{light ? 'Web' : <span className="text-indigo-400">Web</span>}
           </span>
           <span
-            className={`mt-1 text-[9px] font-semibold uppercase tracking-[0.18em] ${
-              light ? 'text-[#64748B]' : 'text-slate-500'
+            className={`mt-1 ${
+              light
+                ? 'text-[11.5px] text-mute'
+                : 'text-[9px] font-semibold uppercase tracking-[0.18em] text-slate-500'
             }`}
           >
             from FRCloud

@@ -2,7 +2,8 @@
 @import "./styles/theme.css";
 
 @theme {
-  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-sans: "Instrument Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-legacy: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 
   --color-ink-950: #05070d;
@@ -12,6 +13,26 @@
   --color-ink-600: #1d2434;
   --color-sky-glow: #38bdf8;
   --color-indigo-glow: #6366f1;
+
+  /* Landing: satu tinta, satu aksen, netral untuk sisanya. */
+  --color-ink: #0f1a2b;
+  --color-body: #3a4556;
+  --color-mute: #667085;
+  --color-faint: #98a1b2;
+  --color-line: #e5e8ee;
+  --color-line-strong: #cfd5df;
+  --color-wash: #f6f7f9;
+  --color-brand: #1b4fd8;
+  --color-brand-deep: #163fae;
+  --color-brand-wash: #eef3fe;
+  --color-ok: #117a4d;
+  --color-ok-wash: #eaf6f0;
+  --color-warn: #8a5a00;
+  --color-warn-wash: #fdf5e3;
+  --color-bad: #b42318;
+  --color-bad-wash: #fdf0ee;
+  --color-wa: #128c4b;
+  --color-wa-deep: #0e7340;
 
   --breakpoint-xs: 26rem;
 }
@@ -27,14 +48,17 @@
     background: #080c14;
     color: #e8edf7;
     font-family: var(--font-sans);
-    font-feature-settings: "ss01" on, "cv01" on;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
 
   ::selection {
-    background: rgba(99, 102, 241, 0.35);
-    color: #fff;
+    background: rgba(27, 79, 216, 0.22);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
   }
 
   button,
@@ -259,7 +283,7 @@
   --pv-accent-2: #0ea5e9;
   --pv-tint: #eef7f1;
   --pv-soft: #f4f6f8;
-  font-family: var(--font-sans);
+  font-family: var(--font-legacy);
   color: var(--pv-ink);
   background: #fff;
   isolation: isolate;
@@ -277,7 +301,7 @@
 }
 
 .pv-display {
-  font-family: var(--font-sans);
+  font-family: var(--font-legacy);
   letter-spacing: -0.035em;
   line-height: 1.04;
 }
@@ -399,13 +423,13 @@
   scroll-margin-top: 84px;
 }
 
-/* ---------- Landing (tema terang monokrom) ---------- */
+/* ---------- Landing ---------- */
 .reveal {
   opacity: 0;
-  transform: translateY(22px);
+  transform: translateY(8px);
   transition:
-    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 0.45s ease-out,
+    transform 0.45s ease-out;
 }
 .reveal-in {
   opacity: 1;
@@ -419,30 +443,48 @@
   }
 }
 
-.bg-dots {
-  background-image: radial-gradient(rgba(11, 31, 63, 0.11) 1px, transparent 1px);
-  background-size: 22px 22px;
-  mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 25%, transparent 80%);
-  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, #000 25%, transparent 80%);
-}
-
-.light-surface {
-  background-image: linear-gradient(180deg, #f9fafb 0%, #f4f5f7 100%);
-}
-
-@keyframes frcloud-marquee {
-  to {
-    transform: translateX(-50%);
+@layer components {
+  .btn {
+    @apply inline-flex h-11 items-center justify-center gap-2 rounded-lg px-5 text-[14.5px] font-semibold whitespace-nowrap transition-colors;
   }
-}
-.animate-marquee {
-  animation: frcloud-marquee 38s linear infinite;
-}
-.animate-marquee:hover {
-  animation-play-state: paused;
-}
-@media (prefers-reduced-motion: reduce) {
-  .animate-marquee {
-    animation: none;
+  .btn-sm {
+    @apply h-9 px-3.5 text-[13.5px];
+  }
+  .btn-lg {
+    @apply h-12 px-6 text-[15px];
+  }
+  .btn-primary {
+    @apply bg-ink text-white hover:bg-[#22314a];
+  }
+  .btn-secondary {
+    @apply border border-line-strong bg-white text-ink hover:border-ink/40 hover:bg-wash;
+  }
+  .btn-wa {
+    @apply bg-wa text-white hover:bg-wa-deep;
+  }
+  .btn-disabled {
+    @apply cursor-not-allowed border border-line bg-wash text-faint;
+  }
+
+  .section {
+    @apply scroll-mt-16 px-4 py-16 sm:px-6 lg:px-8 lg:py-24;
+  }
+  .container-page {
+    @apply mx-auto w-full max-w-7xl;
+  }
+  .eyebrow {
+    @apply text-[13px] font-medium text-mute;
+  }
+  .h2 {
+    @apply text-[28px] leading-[1.12] font-semibold tracking-[-0.02em] text-ink sm:text-[36px];
+  }
+  .lede {
+    @apply text-[15.5px] leading-relaxed text-body;
+  }
+  .field {
+    @apply w-full rounded-lg border border-line-strong bg-white text-[15px] text-ink placeholder:text-faint focus:border-ink focus:ring-2 focus:ring-ink/10 focus:outline-none;
+  }
+  .link-quiet {
+    @apply text-[13.5px] font-medium text-mute underline-offset-4 transition-colors hover:text-ink hover:underline;
   }
 }

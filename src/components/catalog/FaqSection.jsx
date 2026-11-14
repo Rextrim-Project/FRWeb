@@ -41,50 +41,47 @@ export default function FaqSection() {
   const [openIndex, setOpenIndex] = useState(0)
 
   return (
-    <section id="faq" className="relative border-y border-[#DDE5F3] bg-[#EAF0FB] scroll-mt-20 px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
-      <div className="mx-auto grid w-full max-w-7xl gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
+    <section id="faq" className="section border-t border-line bg-wash">
+      <div className="container-page grid gap-10 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-16">
         <div>
-          <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#2F5BEA]">FAQ</span>
-          <h2 className="mt-2.5 text-[26px] font-extrabold leading-tight tracking-tight text-[#0B1F3F] sm:text-[34px]">
-            Pertanyaan yang sering diajukan
-          </h2>
-          <p className="mt-3 text-[14px] leading-relaxed text-[#64748B]">
+          <p className="eyebrow">FAQ</p>
+          <h2 className="h2 mt-2">Pertanyaan yang sering diajukan</h2>
+          <p className="lede mt-4">
             Belum menemukan jawabannya? Tim sales FRWeb siap membantu lewat WhatsApp pada jam
             operasional 08.00–21.00 WIB.
           </p>
-          <a
-            href={WA_CONSULT}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-5 inline-flex items-center gap-2 rounded-xl border border-[#C5D0E4] bg-[#E8EEFA] px-4 py-2.5 text-[12.5px] font-bold text-[#0B1F3F] transition hover:bg-[#E8EEFA]"
-          >
+          <a href={WA_CONSULT} target="_blank" rel="noreferrer" className="btn btn-secondary mt-6">
             <MessageCircle className="h-4 w-4" />
             Tanya langsung via WhatsApp
           </a>
         </div>
 
-        <div className="divide-y divide-[#DDE5F3] overflow-hidden rounded-2xl border border-[#DDE5F3] bg-white">
+        <div className="border-t border-line-strong">
           {FAQS.map((item, index) => {
             const open = openIndex === index
+            const panelId = `faq-panel-${index}`
             return (
-              <div key={item.q}>
-                <button
-                  type="button"
-                  onClick={() => setOpenIndex(open ? -1 : index)}
-                  aria-expanded={open}
-                  className="flex w-full items-start justify-between gap-4 px-4 py-3.5 text-left transition hover:bg-[#E8EEFA] sm:px-5"
-                >
-                  <span className={`text-[13px] font-semibold leading-snug ${open ? 'text-[#0B1F3F]' : 'text-[#475569]'}`}>
-                    {item.q}
-                  </span>
-                  <ChevronDown
-                    className={`mt-0.5 h-4 w-4 shrink-0 text-[#64748B] transition-transform duration-200 ${
-                      open ? 'rotate-180 text-[#0B1F3F]' : ''
-                    }`}
-                  />
-                </button>
+              <div key={item.q} className="border-b border-line-strong">
+                <h3>
+                  <button
+                    type="button"
+                    onClick={() => setOpenIndex(open ? -1 : index)}
+                    aria-expanded={open}
+                    aria-controls={panelId}
+                    className="group flex w-full items-start justify-between gap-6 py-5 text-left"
+                  >
+                    <span className="text-[16.5px] font-semibold leading-snug text-ink group-hover:text-brand">
+                      {item.q}
+                    </span>
+                    <ChevronDown
+                      className={`mt-0.5 h-5 w-5 shrink-0 text-mute transition-transform duration-200 ${
+                        open ? 'rotate-180' : ''
+                      }`}
+                    />
+                  </button>
+                </h3>
                 {open && (
-                  <p className="animate-fade-in px-4 pb-4 text-[12.5px] leading-relaxed text-[#64748B] sm:px-5">
+                  <p id={panelId} className="animate-fade-in max-w-2xl pb-6 text-[15px] leading-relaxed text-body">
                     {item.a}
                   </p>
                 )}

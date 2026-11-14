@@ -1,5 +1,4 @@
-import { Fragment } from 'react'
-import { Check, ChevronRight, CreditCard, Globe, Layers, Rocket } from '../../lib/icons'
+import { Check, CreditCard, Globe, Layers, Rocket } from '../../lib/icons'
 import { scrollToSection, useOrder } from '../../context/OrderContext'
 
 export const ORDER_STEPS = [
@@ -41,108 +40,63 @@ export const ORDER_STEPS = [
   },
 ]
 
-/**
- * Segmented step tracker — breadcrumb pill, bukan card.
- * Latar tiap pill solid (tanpa alpha) + `relative z-10` supaya tidak ada
- * elemen dekoratif dari section di belakangnya yang menembus pill.
- */
-const PILL_SURFACE = {
-  done: 'border-[#C5D0E4] bg-[#E0E9FD] text-[#2F5BEA] hover:border-[#94A3B8]',
-  active:
-    'border-[#0B1F3F] bg-gradient-to-br from-[#0B1F3F] to-[#1E40AF] text-white',
-  idle: 'border-[#DDE5F3] bg-white text-[#64748B] hover:border-[#C5D0E4] hover:text-[#0B1F3F]',
+const RULE = {
+  done: 'border-ink',
+  active: 'border-brand',
+  idle: 'border-line group-hover:border-line-strong',
 }
 
+/**
+ * Pelacak langkah order: empat kolom dengan garis atas sebagai penanda status.
+ * Setiap kolom adalah tombol yang menggulir ke section terkait.
+ */
 export default function Stepper({ className = '' }) {
   const { order, isDomainReady, isDesignReady, checkoutReady } = useOrder()
 
   const done = [Boolean(order.planId), isDomainReady, isDesignReady, checkoutReady]
   const activeIndex = done.findIndex((value) => !value)
-  const completed = done.filter(Boolean).length
-  const progress = (completed / ORDER_STEPS.length) * 100
 
   return (
-    <div className={`relative z-10 ${className}`}>
-      <ol
-        aria-label="Alur pemesanan"
-        className="flex flex-wrap items-center gap-x-1 gap-y-2 lg:flex-nowrap lg:gap-x-1.5"
-      >
-        {ORDER_STEPS.map((step, index) => {
-          const Icon = step.icon
-          const isDone = done[index]
-          const isActive = index === activeIndex
-          const state = isDone ? 'done' : isActive ? 'active' : 'idle'
+    <ol
+      aria-label="Alur pemesanan"
+      className={`grid grid-cols-2 gap-x-4 gap-y-6 lg:grid-cols-4 lg:gap-x-6 ${className}`}
+    >
+      {ORDER_STEPS.map((step, index) => {
+        const isDone = done[index]
+        const isActive = index === activeIndex
+        const state = isDone ? 'done' : isActive ? 'active' : 'idle'
 
-          return (
-            <Fragment key={step.id}>
-              {index > 0 && (
-                <li aria-hidden="true" className="hidden shrink-0 items-center sm:flex">
-                  <ChevronRight className="h-3 w-3 text-[#C5D0E4]" strokeWidth={2.5} />
-                </li>
-              )}
-
-              <li className="min-w-0 shrink-0">
-                <button
-                  type="button"
-                  onClick={() => scrollToSection(step.target)}
-                  aria-current={isActive ? 'step' : undefined}
-                  title={step.desc}
-                  className={`relative z-10 inline-flex items-center gap-2 rounded-full border px-2.5 py-1.5 text-left transition sm:px-3 ${PILL_SURFACE[state]}`}
-                >
-                  <span
-                    className={`relative grid h-5 w-5 shrink-0 place-items-center rounded-full ${
-                      isDone
-                        ? 'bg-gradient-to-br from-[#0B1F3F] to-[#1E40AF] text-white'
-                        : isActive
-                          ? 'bg-white/15 text-white'
-                          : 'bg-[#E8EEFA] text-[#64748B]'
-                    }`}
-                  >
-                    {isDone ? (
-                      <Check className="h-3 w-3" strokeWidth={3.5} />
-                    ) : (
-                      <Icon className="h-3 w-3" />
-                    )}
-                    {isActive && (
-                      <span
-                        aria-hidden="true"
-                        className="absolute inset-0 animate-pulse-ring rounded-full ring-1 ring-white/50"
-                      />
-                    )}
+        return (
+          <li key={step.id} className="min-w-0">
+            <button
+              type="button"
+              onClick={() => scrollToSection(step.target)}
+              aria-current={isActive ? 'step' : undefined}
+              className={`group block w-full border-t-2 pt-3.5 text-left transition-colors ${RULE[state]}`}
+            >
+              <span className="flex items-center gap-2 text-[12.5px]">
+                <span className="font-mono text-mute">{step.number}</span>
+                {isDone && (
+                  <span className="inline-flex items-center gap-1 font-medium text-ok">
+                    <Check className="h-3.5 w-3.5" strokeWidth={3} />
+                    Selesai
                   </span>
-
-                  <span className="font-mono text-[9.5px] font-bold tabular-nums opacity-60">
-                    {step.number}
-                  </span>
-                  <span className="whitespace-nowrap text-[11.5px] font-semibold">
-                    <span className="hidden sm:inline">{step.title}</span>
-                    <span className="sm:hidden">{step.short}</span>
-                  </span>
-                </button>
-              </li>
-            </Fragment>
-          )
-        })}
-
-        <li className="ml-auto hidden shrink-0 items-center gap-1.5 pl-3 lg:flex">
-          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-gradient-to-br from-[#0B1F3F] to-[#1E40AF]" />
-          <span className="font-mono text-[10px] font-semibold tabular-nums text-[#64748B]">
-            {completed}/{ORDER_STEPS.length} siap
-          </span>
-        </li>
-      </ol>
-
-      <div className="mt-3 flex items-center gap-3">
-        <div className="h-[3px] flex-1 overflow-hidden rounded-full bg-[#DDE5F3]">
-          <div
-            className="h-full rounded-full bg-gradient-to-br from-[#0B1F3F] to-[#1E40AF] transition-all duration-500"
-            style={{ width: `${progress}%` }}
-          />
-        </div>
-        <span className="shrink-0 font-mono text-[9.5px] font-semibold tabular-nums text-[#64748B] lg:hidden">
-          {completed}/{ORDER_STEPS.length}
-        </span>
-      </div>
-    </div>
+                )}
+                {isActive && <span className="font-medium text-brand">Berikutnya</span>}
+              </span>
+              <span
+                className={`mt-1.5 block text-[16px] font-semibold ${
+                  state === 'idle' ? 'text-body group-hover:text-ink' : 'text-ink'
+                }`}
+              >
+                <span className="hidden sm:inline">{step.title}</span>
+                <span className="sm:hidden">{step.short}</span>
+              </span>
+              <span className="mt-1 hidden text-[13.5px] leading-snug text-mute sm:block">{step.desc}</span>
+            </button>
+          </li>
+        )
+      })}
+    </ol>
   )
 }

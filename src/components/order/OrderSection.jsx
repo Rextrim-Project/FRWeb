@@ -1,8 +1,9 @@
-import { ArrowRight, Check, Clock, CreditCard, Globe, Layers, MessageCircle, QrCode, RotateCcw, ShieldCheck, Sparkles, Zap } from '../../lib/icons'
+import { ArrowRight, Check, MessageCircle, RotateCcw, ShieldCheck } from '../../lib/icons'
 import { formatIDR } from '../../lib/format'
 import { CUSTOM_TIMELINE, featureLabels } from '../../data/customFeatures'
 import { PAYMENT_ADDON } from '../../data/paymentAddon'
 import { scrollToSection, useOrder } from '../../context/OrderContext'
+import SectionHeader from '../catalog/SectionHeader'
 import PaymentGatewayToggle from './PaymentGatewayToggle'
 
 const TEMPLATE_TIMELINE = [
@@ -35,20 +36,29 @@ const CUSTOM_TIMELINE_STEPS = [
   },
 ]
 
-function SummaryRow({ icon: Icon, label, value, action, tone = 'default' }) {
+function SummaryRow({ label, value, action, tone = 'default' }) {
   return (
-    <div className="flex items-start gap-3 border-b border-[#DDE5F3] py-3 last:border-0">
-      <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-[#E8EEFA] text-[#64748B]">
-        <Icon className="h-3.5 w-3.5" />
-      </span>
+    <div className="flex items-start justify-between gap-4 border-b border-line py-3.5 last:border-0">
       <div className="min-w-0 flex-1">
-        <p className="text-[10px] uppercase tracking-wider text-[#64748B]">{label}</p>
-        <p className={`mt-0.5 truncate text-[12.5px] font-semibold ${tone === 'muted' ? 'text-[#64748B]' : 'text-[#0B1F3F]'}`}>
+        <dt className="text-[13px] text-mute">{label}</dt>
+        <dd className={`mt-0.5 truncate text-[15px] font-medium ${tone === 'muted' ? 'text-faint' : 'text-ink'}`}>
           {value}
-        </p>
+        </dd>
       </div>
       {action}
     </div>
+  )
+}
+
+function RowAction({ onClick, children }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="mt-0.5 shrink-0 text-[13.5px] font-medium text-brand underline-offset-4 hover:underline"
+    >
+      {children}
+    </button>
   )
 }
 
@@ -90,7 +100,6 @@ export default function OrderSection() {
     {
       id: 'paket',
       target: 'paket',
-      icon: CreditCard,
       label: 'Paket',
       value: `${plan.name}${isCustom ? '' : ` — ${formatIDR(plan.price)}`}`,
       done: true,
@@ -98,7 +107,6 @@ export default function OrderSection() {
     {
       id: 'domain',
       target: 'domain',
-      icon: Globe,
       label: 'Nama domain',
       value: domainCheck.state === 'valid' && domain ? domain : 'Belum dipilih',
       done: domainCheck.state === 'valid',
@@ -106,167 +114,126 @@ export default function OrderSection() {
     {
       id: 'desain',
       target: 'katalog',
-      icon: isCustomMode ? Sparkles : Layers,
       label: 'Desain',
       value: designValue,
       done: isCustomMode ? isCustomDesignReady : isTemplateReady,
     },
   ]
 
-  return (
-    <section id="ringkasan" className="relative border-y border-[#DDE5F3] bg-[#EAF0FB] scroll-mt-20 px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
-      <div className="mx-auto w-full max-w-7xl">
-        <div className="max-w-2xl">
-          <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#2F5BEA]">Langkah 4</span>
-          <h2 className="mt-2.5 text-[26px] font-extrabold leading-tight tracking-tight text-[#0B1F3F] sm:text-[34px]">
-            {isCustomMode ? 'Ringkasan brief & rencana pengerjaan' : 'Ringkasan pesanan & go-live 30 menit'}
-          </h2>
-          <p className="mt-3 text-[14px] leading-relaxed text-[#64748B]">
-            {isCustomMode
-              ? 'Periksa kembali brief desain Anda. Satu klik akan mengirim detail kebutuhan ke WhatsApp tim FRWeb untuk dihitung estimasi biaya dan timeline-nya.'
-              : 'Periksa kembali pilihan Anda. Satu klik akan mengirim detail order ke WhatsApp tim FRWeb, lalu website Anda disiapkan dan aktif dalam ± 30 menit.'}
-          </p>
-        </div>
+  const missing = [
+    domainCheck.state !== 'valid' ? 'domain' : null,
+    isCustomMode ? (isCustomDesignReady ? null : 'brief desain') : isTemplateReady ? null : 'pilihan template',
+  ].filter(Boolean)
+  const checkoutLabel = isCustomMode ? 'Kirim Brief via WhatsApp' : 'Proses & Go-Live via WhatsApp'
 
-        <div className="mt-8 grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)] lg:items-start">
-          <div className="min-w-0 space-y-4">
-            <div className="rounded-2xl border border-[#DDE5F3] bg-white p-4 sm:p-5">
-              <div className="flex items-center justify-between">
-                <h3 className="text-[13px] font-bold text-[#0B1F3F]">Kelengkapan order</h3>
-                <span className="rounded-full border border-[#DDE5F3] bg-[#F5F8FD] px-2 py-0.5 text-[10px] font-semibold text-[#64748B]">
-                  {checklist.filter((item) => item.done).length} / 3 siap
+  return (
+    <section id="ringkasan" className="section border-y border-line bg-wash">
+      <div className="container-page">
+        <SectionHeader
+          label="Langkah 4 · Ringkasan"
+          title={isCustomMode ? 'Ringkasan brief & rencana pengerjaan' : 'Ringkasan pesanan & go-live 30 menit'}
+        >
+          {isCustomMode
+            ? 'Periksa kembali brief desain Anda. Satu klik akan mengirim detail kebutuhan ke WhatsApp tim FRWeb untuk dihitung estimasi biaya dan timeline-nya.'
+            : 'Periksa kembali pilihan Anda. Satu klik akan mengirim detail order ke WhatsApp tim FRWeb, lalu website Anda disiapkan dan aktif dalam ± 30 menit.'}
+        </SectionHeader>
+
+        <div className="mt-10 grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)] lg:items-start lg:gap-12">
+          <div className="min-w-0 space-y-10">
+            <div>
+              <div className="flex items-baseline justify-between gap-3">
+                <h3 className="text-[18px] font-semibold text-ink">Kelengkapan order</h3>
+                <span className="text-[14px] text-mute">
+                  <span className="font-semibold text-ink">{checklist.filter((item) => item.done).length}</span> dari 3
+                  siap
                 </span>
               </div>
 
-              <div className="mt-3 divide-y divide-white/[0.06]">
-                {checklist.map((item) => {
-                  const Icon = item.icon
-                  return (
-                    <div key={item.id} className="flex items-center gap-3 py-3">
-                      <span
-                        className={`grid h-8 w-8 shrink-0 place-items-center rounded-lg ${
-                          item.done ? 'bg-[#E8EEFA] text-[#0B1F3F]' : 'bg-[#E8EEFA] text-[#64748B]'
-                        }`}
-                      >
-                        {item.done ? <Check className="h-4 w-4" strokeWidth={3} /> : <Icon className="h-4 w-4" />}
-                      </span>
-                      <div className="min-w-0 flex-1">
-                        <p className="text-[12.5px] font-semibold text-[#0B1F3F]">{item.label}</p>
-                        <p className={`truncate text-[11.5px] ${item.done ? 'text-[#475569]' : 'text-[#64748B]'}`}>
-                          {item.value}
-                        </p>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => scrollToSection(item.target)}
-                        className="shrink-0 rounded-lg border border-[#DDE5F3] px-2.5 py-1.5 text-[10.5px] font-semibold text-[#475569] transition hover:border-[#DDE5F3] hover:bg-[#E8EEFA]"
-                      >
-                        {item.done ? 'Ubah' : 'Isi'}
-                      </button>
+              <ul className="mt-3 divide-y divide-line border-y border-line">
+                {checklist.map((item) => (
+                  <li key={item.id} className="flex items-center gap-3.5 py-4">
+                    <span
+                      aria-hidden="true"
+                      className={`grid h-6 w-6 shrink-0 place-items-center rounded-full border ${
+                        item.done ? 'border-ok bg-ok text-white' : 'border-line-strong bg-white text-transparent'
+                      }`}
+                    >
+                      <Check className="h-3.5 w-3.5" strokeWidth={3.5} />
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-[15px] font-semibold text-ink">{item.label}</p>
+                      <p className={`truncate text-[14px] ${item.done ? 'text-body' : 'text-mute'}`}>{item.value}</p>
                     </div>
-                  )
-                })}
-              </div>
+                    <button
+                      type="button"
+                      onClick={() => scrollToSection(item.target)}
+                      className={`btn btn-sm shrink-0 ${item.done ? 'btn-secondary' : 'btn-primary'}`}
+                    >
+                      {item.done ? 'Ubah' : 'Isi'}
+                    </button>
+                  </li>
+                ))}
+              </ul>
             </div>
 
-            <div className="rounded-2xl border border-[#DDE5F3] bg-white p-4 sm:p-5">
-              <h3 className="flex items-center gap-1.5 text-[13px] font-bold text-[#0B1F3F]">
-                <Zap className="h-3.5 w-3.5 text-[#0B1F3F]" />
-                Setelah checkout
-              </h3>
-              <ol className="mt-3 space-y-3">
+            <div>
+              <h3 className="text-[18px] font-semibold text-ink">Setelah checkout</h3>
+              <ol className="mt-4 space-y-5">
                 {(isCustomMode ? CUSTOM_TIMELINE_STEPS : TEMPLATE_TIMELINE).map((step, index) => (
-                  <li key={step.title} className="flex gap-3">
-                    <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-[#E8EEFA] font-mono text-[10px] font-bold text-[#0B1F3F]">
-                      {index + 1}
-                    </span>
+                  <li key={step.title} className="flex gap-4">
+                    <span className="w-5 shrink-0 pt-0.5 font-mono text-[13px] text-mute">0{index + 1}</span>
                     <div>
-                      <p className="text-[12px] font-semibold text-[#0B1F3F]">{step.title}</p>
-                      <p className="mt-0.5 text-[11.5px] leading-relaxed text-[#64748B]">{step.desc}</p>
+                      <p className="text-[15px] font-semibold text-ink">{step.title}</p>
+                      <p className="mt-1 text-[14px] leading-relaxed text-body">{step.desc}</p>
                     </div>
                   </li>
                 ))}
               </ol>
             </div>
 
-            <div className="flex items-start gap-2.5 rounded-xl border border-[#C5D0E4] bg-[#E8EEFA] px-3.5 py-3 text-[11.5px] leading-relaxed text-[#0B1F3F]">
-              <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-[#0B1F3F]" />
+            <p className="flex items-start gap-2.5 border-t border-line pt-6 text-[14px] leading-relaxed text-body">
+              <ShieldCheck className="mt-0.5 h-4.5 w-4.5 shrink-0 text-ink" strokeWidth={1.75} />
               {isCustomMode
                 ? 'Garansi revisi desain 2× dan revisi konten 7 hari setelah website live. Timeline final dikonfirmasi setelah brief disetujui.'
                 : 'Garansi revisi konten 7 hari dan uang kembali jika website tidak bisa online dalam 24 jam setelah pembayaran.'}
-            </div>
+            </p>
           </div>
 
           <div className="min-w-0 lg:sticky lg:top-24">
-            <div className="overflow-hidden rounded-2xl border border-[#DDE5F3] bg-white shadow-[0_8px_30px_-16px_rgba(11,31,63,0.2)]">
-              <div className="flex items-center justify-between border-b border-[#DDE5F3] bg-[#F5F8FD] px-4 py-3">
-                <h3 className="text-[13px] font-bold text-[#0B1F3F]">Detail Pesanan</h3>
-                <span
-                  className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold ${
-                    isCustomMode
-                      ? 'bg-[#E8EEFA] text-[#0B1F3F]'
-                      : 'bg-[#E8EEFA] text-[#0B1F3F]'
-                  }`}
-                >
-                  <Clock className="h-2.5 w-2.5" />
-                  {isCustomMode ? CUSTOM_TIMELINE : '± 30 menit'}
+            <div className="rounded-xl border border-line-strong bg-white shadow-[0_16px_40px_-28px_rgba(15,26,43,0.3)]">
+              <div className="flex items-baseline justify-between gap-3 border-b border-line px-5 py-4 sm:px-6">
+                <h3 className="text-[18px] font-semibold text-ink">Detail pesanan</h3>
+                <span className="text-[13.5px] text-mute">
+                  Estimasi {isCustomMode ? CUSTOM_TIMELINE : '± 30 menit'}
                 </span>
               </div>
 
-              <div className="px-4 py-1">
+              <dl className="px-5 py-1 sm:px-6">
                 <SummaryRow
-                  icon={CreditCard}
                   label="Paket"
                   value={`${plan.name}${isCustom ? ' — hubungi kami' : ` (${formatIDR(plan.price)})`}`}
-                  action={
-                    <button
-                      type="button"
-                      onClick={() => scrollToSection('paket')}
-                      className="text-[10.5px] font-semibold text-[#64748B] hover:text-[#0B1F3F]"
-                    >
-                      Ubah
-                    </button>
-                  }
+                  action={<RowAction onClick={() => scrollToSection('paket')}>Ubah</RowAction>}
                 />
                 <SummaryRow
-                  icon={Globe}
                   label="Domain"
                   value={domain || 'Belum dipilih'}
                   tone={domain ? 'default' : 'muted'}
-                  action={
-                    <button
-                      type="button"
-                      onClick={() => scrollToSection('domain')}
-                      className="text-[10.5px] font-semibold text-[#64748B] hover:text-[#0B1F3F]"
-                    >
-                      Ubah
-                    </button>
-                  }
+                  action={<RowAction onClick={() => scrollToSection('domain')}>{domain ? 'Ubah' : 'Isi'}</RowAction>}
                 />
                 {isCustomMode ? (
                   <>
+                    <SummaryRow label="Mode desain" value="Custom Design Request (bukan template)" />
                     <SummaryRow
-                      icon={Sparkles}
-                      label="Mode desain"
-                      value="Custom Design Request (bukan template)"
-                    />
-                    <SummaryRow
-                      icon={Globe}
                       label="Referensi web"
                       value={customBrief.reference.trim() || 'Belum diisi'}
                       tone={customBrief.reference.trim() ? 'default' : 'muted'}
                       action={
-                        <button
-                          type="button"
-                          onClick={() => scrollToSection('katalog')}
-                          className="text-[10.5px] font-semibold text-[#64748B] hover:text-[#0B1F3F]"
-                        >
+                        <RowAction onClick={() => scrollToSection('katalog')}>
                           {customBrief.reference.trim() ? 'Ubah' : 'Isi'}
-                        </button>
+                        </RowAction>
                       }
                     />
                     <SummaryRow
-                      icon={Layers}
                       label="Fitur khusus"
                       value={
                         customBrief.features.length > 0
@@ -275,29 +242,21 @@ export default function OrderSection() {
                       }
                       tone={customBrief.features.length > 0 ? 'default' : 'muted'}
                       action={
-                        <button
-                          type="button"
-                          onClick={() => scrollToSection('katalog')}
-                          className="text-[10.5px] font-semibold text-[#64748B] hover:text-[#0B1F3F]"
-                        >
+                        <RowAction onClick={() => scrollToSection('katalog')}>
                           {customBrief.features.length > 0 ? 'Ubah' : 'Pilih'}
-                        </button>
+                        </RowAction>
                       }
                     />
                     {customBrief.features.length > 0 && (
-                      <div className="flex flex-wrap gap-1 border-b border-[#DDE5F3] py-2.5 pl-10">
+                      <div className="flex flex-wrap gap-1.5 border-b border-line py-3">
                         {featureLabels(customBrief.features).map((label) => (
-                          <span
-                            key={label}
-                            className="rounded-md border border-[#C5D0E4] bg-[#E8EEFA] px-1.5 py-0.5 text-[10px] font-medium text-[#0B1F3F]"
-                          >
+                          <span key={label} className="rounded-md bg-wash px-2 py-1 text-[13px] text-ink">
                             {label}
                           </span>
                         ))}
                       </div>
                     )}
                     <SummaryRow
-                      icon={MessageCircle}
                       label="Catatan brief"
                       value={customBrief.notes.trim() ? customBrief.notes.trim() : 'Tidak ada catatan tambahan'}
                       tone={customBrief.notes.trim() ? 'default' : 'muted'}
@@ -305,34 +264,20 @@ export default function OrderSection() {
                   </>
                 ) : (
                   <SummaryRow
-                    icon={Layers}
                     label="Template"
                     value={template ? template.name : 'Belum dipilih'}
                     tone={template ? 'default' : 'muted'}
                     action={
                       template ? (
-                        <button
-                          type="button"
-                          onClick={clearTemplate}
-                          className="text-[10.5px] font-semibold text-[#64748B] hover:text-[#0B1F3F]"
-                        >
-                          Hapus
-                        </button>
+                        <RowAction onClick={clearTemplate}>Hapus</RowAction>
                       ) : (
-                        <button
-                          type="button"
-                          onClick={() => scrollToSection('katalog')}
-                          className="text-[10.5px] font-semibold text-[#64748B] hover:text-[#0B1F3F]"
-                        >
-                          Pilih
-                        </button>
+                        <RowAction onClick={() => scrollToSection('katalog')}>Pilih</RowAction>
                       )
                     }
                   />
                 )}
                 <SummaryRow
-                  icon={QrCode}
-                  label="Add-On Pembayaran"
+                  label="Add-on pembayaran"
                   value={
                     includePaymentGateway
                       ? `Payment Gateway & QRIS Otomatis (+${formatIDR(PAYMENT_ADDON.price)})`
@@ -340,17 +285,12 @@ export default function OrderSection() {
                   }
                   tone={includePaymentGateway ? 'default' : 'muted'}
                   action={
-                    <button
-                      type="button"
-                      onClick={() => scrollToSection('addon-pembayaran')}
-                      className="text-[10.5px] font-semibold text-[#64748B] hover:text-[#0B1F3F]"
-                    >
+                    <RowAction onClick={() => scrollToSection('addon-pembayaran')}>
                       {includePaymentGateway ? 'Ubah' : 'Tambah'}
-                    </button>
+                    </RowAction>
                   }
                 />
                 <SummaryRow
-                  icon={Clock}
                   label={isCustomMode ? 'Estimasi pengerjaan' : 'Estimasi go-live'}
                   value={
                     isCustomMode
@@ -358,97 +298,71 @@ export default function OrderSection() {
                       : '30 menit setelah pembayaran'
                   }
                 />
-              </div>
+              </dl>
 
-              <div className="border-t border-[#DDE5F3] px-4 py-3">
-                <div className="space-y-1.5 pb-3 text-[11.5px]">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="text-[#64748B]">Paket {plan.name}</span>
-                    <span className="font-semibold text-[#334155]">{planSubtotalLabel}</span>
+              <div className="border-t border-line px-5 py-5 sm:px-6">
+                <PaymentGatewayToggle compact />
+
+                <div className="mt-5 space-y-2 text-[14px]">
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-body">Paket {plan.name}</span>
+                    <span className="font-medium text-ink tabular-nums">{planSubtotalLabel}</span>
                   </div>
                   {includePaymentGateway ? (
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="text-[#64748B]">
-                        Add-on Payment Gateway &amp; QRIS <span className="text-[#94A3B8]">(one-time)</span>
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="text-body">
+                        Add-on Payment Gateway &amp; QRIS <span className="text-mute">(one-time)</span>
                       </span>
-                      <span className="font-semibold text-[#0B1F3F]">+{formatIDR(addonPrice)}</span>
+                      <span className="font-medium text-ink tabular-nums">+{formatIDR(addonPrice)}</span>
                     </div>
                   ) : (
-                    <div className="flex items-start justify-between gap-2">
-                      <span className="text-[#64748B]">Checkout WhatsApp manual</span>
-                      <span className="shrink-0 font-semibold text-[#64748B]">Gratis</span>
+                    <div className="flex items-start justify-between gap-3">
+                      <span className="text-body">Checkout WhatsApp manual</span>
+                      <span className="shrink-0 font-medium text-mute">Gratis</span>
                     </div>
                   )}
                 </div>
 
-                <PaymentGatewayToggle compact className="mb-3" />
-
-                <div className="flex items-end justify-between">
+                <div className="mt-4 flex items-end justify-between gap-3 border-t border-line pt-4">
                   <div>
-                    <p className="text-[10px] uppercase tracking-wider text-[#64748B]">Total setup</p>
+                    <p className="text-[13.5px] text-mute">Total setup</p>
                     <p
                       data-order-total
-                      className="mt-0.5 text-[20px] font-extrabold leading-none text-[#0B1F3F]"
+                      className="mt-1 text-[28px] font-semibold leading-none tracking-[-0.02em] text-ink tabular-nums"
                     >
                       {totalLabel}
                     </p>
                   </div>
-                  <p className="text-right text-[10px] leading-snug text-[#64748B]">
-                    sekali bayar
+                  <p className="text-right text-[13px] leading-snug text-mute">
+                    Sekali bayar,
                     <br />
                     tanpa biaya tersembunyi
                   </p>
                 </div>
 
                 {checkoutReady ? (
-                  <a
-                    href={waOrderLink}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="mt-3.5 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-br from-[#0B1F3F] to-[#1E40AF] px-4 py-3.5 text-[13px] font-bold text-white  transition hover:brightness-125"
-                  >
-                    <MessageCircle className="h-4 w-4" />
-                    {isCustomMode ? 'Kirim Brief via WhatsApp' : 'Proses & Go-Live via WhatsApp'}
+                  <a href={waOrderLink} target="_blank" rel="noreferrer" className="btn btn-lg btn-wa mt-5 w-full">
+                    <MessageCircle className="h-4.5 w-4.5" />
+                    {checkoutLabel}
                   </a>
                 ) : (
-                  <div className="mt-3.5">
-                    <button
-                      type="button"
-                      disabled
-                      className="inline-flex w-full cursor-not-allowed items-center justify-center gap-2 rounded-xl border border-[#DDE5F3] bg-[#F5F8FD] px-4 py-3.5 text-[13px] font-bold text-[#64748B]"
-                    >
-                      <MessageCircle className="h-4 w-4" />
-                      {isCustomMode ? 'Kirim Brief via WhatsApp' : 'Proses & Go-Live via WhatsApp'}
+                  <div className="mt-5">
+                    <button type="button" disabled className="btn btn-lg btn-disabled w-full">
+                      <MessageCircle className="h-4.5 w-4.5" />
+                      {checkoutLabel}
                     </button>
-                    <p className="mt-2 text-center text-[10.5px] text-[#0B1F3F]">
-                      Lengkapi{' '}
-                      {[
-                        domainCheck.state !== 'valid' ? 'domain' : null,
-                        isCustomMode
-                          ? isCustomDesignReady
-                            ? null
-                            : 'brief desain'
-                          : isTemplateReady
-                            ? null
-                            : 'pilihan template',
-                      ]
-                        .filter(Boolean)
-                        .join(' & ')}{' '}
-                      untuk checkout.
+                    <p className="mt-2.5 text-center text-[13.5px] text-body">
+                      Lengkapi {missing.join(' & ')} untuk checkout.
                     </p>
                   </div>
                 )}
 
-                <div className="mt-2.5 flex items-center justify-between">
-                  <button
-                    type="button"
-                    onClick={resetOrder}
-                    className="inline-flex items-center gap-1 text-[10.5px] font-medium text-[#64748B] transition hover:text-[#475569]"
-                  >
-                    <RotateCcw className="h-3 w-3" />
+                <div className="mt-4 flex items-center justify-between">
+                  <button type="button" onClick={resetOrder} className="link-quiet inline-flex items-center gap-1.5">
+                    <RotateCcw className="h-3.5 w-3.5" />
                     Reset order
                   </button>
-                  <span className="text-[10px] text-[#64748B]">Tanpa kartu kredit</span>
+                  <span className="text-[13px] text-mute">Tanpa kartu kredit</span>
                 </div>
               </div>
             </div>
@@ -456,33 +370,28 @@ export default function OrderSection() {
         </div>
       </div>
 
-      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-[#DDE5F3] bg-[#F5F8FD]/95 px-3 py-2.5 backdrop-blur-xl lg:hidden">
+      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-line-strong bg-white px-4 py-3 lg:hidden">
         <div className="mx-auto flex max-w-3xl items-center gap-3">
           <div className="min-w-0 flex-1">
-            <p className="text-[9.5px] uppercase tracking-wider text-[#64748B]">
+            <p className="truncate text-[12.5px] text-mute">
               Total · {isCustomMode ? CUSTOM_TIMELINE : '± 30 menit'}
-              {includePaymentGateway && <span className="text-[#0B1F3F]"> · incl. add-on QRIS</span>}
+              {includePaymentGateway && ' · termasuk add-on QRIS'}
             </p>
-            <p className="truncate text-[14px] font-extrabold text-[#0B1F3F]">{totalLabel}</p>
+            <p className="truncate text-[17px] font-semibold leading-tight text-ink tabular-nums">{totalLabel}</p>
           </div>
           {checkoutReady ? (
-            <a
-              href={waOrderLink}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-gradient-to-br from-[#0B1F3F] to-[#1E40AF] px-3.5 py-2.5 text-[11.5px] font-bold text-white"
-            >
-              <MessageCircle className="h-3.5 w-3.5" />
+            <a href={waOrderLink} target="_blank" rel="noreferrer" className="btn btn-wa shrink-0 px-4">
+              <MessageCircle className="h-4 w-4" />
               {isCustomMode ? 'Kirim brief' : 'Go-Live'}
             </a>
           ) : (
             <button
               type="button"
               onClick={() => scrollToSection(domainCheck.state === 'valid' ? 'katalog' : 'domain')}
-              className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-gradient-to-br from-[#0B1F3F] to-[#1E40AF] px-3.5 py-2.5 text-[11.5px] font-bold text-white"
+              className="btn btn-primary shrink-0 px-4"
             >
               Lengkapi order
-              <ArrowRight className="h-3.5 w-3.5" />
+              <ArrowRight className="h-4 w-4" />
             </button>
           )}
         </div>

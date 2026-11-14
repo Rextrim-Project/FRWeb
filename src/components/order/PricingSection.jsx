@@ -1,9 +1,16 @@
-import { ArrowUpRight, Check, CreditCard, MessageCircle, Minus, Sparkles } from '../../lib/icons'
+import { ArrowRight, Check, Minus } from '../../lib/icons'
 import { PLANS } from '../../data/plans'
 import { PAYMENT_ADDON } from '../../data/paymentAddon'
 import { formatIDR } from '../../lib/format'
 import { scrollToSection, useOrder } from '../../context/OrderContext'
+import SectionHeader from '../catalog/SectionHeader'
 import PaymentGatewayToggle from './PaymentGatewayToggle'
+
+const ASSURANCES = [
+  'Invoice resmi & pembayaran transfer/QRIS',
+  'Garansi revisi konten 7 hari',
+  'Domain & hosting atas nama Anda',
+]
 
 function PlanCard({ plan }) {
   const { order, selectPlan } = useOrder()
@@ -12,76 +19,72 @@ function PlanCard({ plan }) {
 
   return (
     <div
-      className={`group relative flex flex-col overflow-hidden rounded-2xl border p-5 transition duration-300 ${
-        selected
-          ? 'border-[#0B1F3F] bg-[#E8EEFA] shadow-[0_8px_24px_-12px_rgba(11,31,63,0.18)]'
-          : 'border-[#DDE5F3] bg-white hover:-translate-y-1 hover:border-[#C5D0E4]'
+      className={`relative flex flex-col rounded-xl border bg-white p-6 transition-colors ${
+        selected ? 'border-ink ring-1 ring-ink' : 'border-line-strong hover:border-ink/40'
       }`}
     >
-      {plan.recommended && (
-        <span className="absolute right-4 top-4 inline-flex items-center gap-1 rounded-full bg-gradient-to-br from-[#0B1F3F] to-[#1E40AF] px-2.5 py-1 text-[9.5px] font-black uppercase tracking-wider text-white">
-          <Sparkles className="h-2.5 w-2.5" />
-          {plan.badge}
-        </span>
-      )}
-
       <button
         type="button"
         onClick={() => selectPlan(plan.id)}
         aria-pressed={selected}
         aria-label={`Pilih ${plan.name}`}
-        className="absolute inset-0 z-0 cursor-pointer rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C5D0E4]"
+        className="absolute inset-0 z-0 cursor-pointer rounded-xl"
       />
 
       <div className="pointer-events-none relative z-10 flex flex-1 flex-col">
-        <div className="flex items-start gap-2">
+        <div className="flex items-start justify-between gap-3">
+          <h3 className="text-[18px] font-semibold text-ink">{plan.name}</h3>
           <span
-            className={`mt-0.5 grid h-4 w-4 shrink-0 place-items-center rounded-full border transition ${
-              selected ? 'border-[#0B1F3F] bg-gradient-to-br from-[#0B1F3F] to-[#1E40AF] text-white' : 'border-[#DDE5F3] text-transparent'
+            aria-hidden="true"
+            className={`mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full border transition-colors ${
+              selected ? 'border-ink bg-ink text-white' : 'border-line-strong text-transparent'
             }`}
           >
-            <Check className="h-2.5 w-2.5" strokeWidth={4} />
+            <Check className="h-3 w-3" strokeWidth={3.5} />
           </span>
-          <div>
-            <h3 className={`${plan.recommended ? "pr-24 " : ""}text-[15px] font-extrabold tracking-tight text-[#0B1F3F]`}>{plan.name}</h3>
-            <p className="mt-1 text-[11.5px] leading-snug text-[#64748B]">{plan.tagline}</p>
-          </div>
         </div>
 
-        <div className="mt-4">
+        <p className="mt-1.5 text-[14px] leading-snug text-mute">
+          {plan.recommended && (
+            <span className="mr-2 rounded bg-brand-wash px-1.5 py-0.5 text-[11.5px] font-semibold tracking-wide text-brand">
+              {plan.badge}
+            </span>
+          )}
+          {plan.tagline}
+        </p>
+
+        <div className="mt-6">
           {isCustom ? (
-            <p className="text-[22px] font-extrabold leading-none text-[#0B1F3F]">Hubungi WhatsApp</p>
+            <p className="text-[26px] font-semibold leading-none tracking-[-0.02em] text-ink">Hubungi WhatsApp</p>
           ) : (
-            <p className="flex flex-wrap items-baseline gap-1">
-              <span className="text-[22px] font-extrabold leading-none text-[#0B1F3F]">{formatIDR(plan.price)}</span>
-              <span className="text-[10.5px] font-medium text-[#64748B]">{plan.priceSuffix}</span>
+            <p className="flex flex-wrap items-baseline gap-x-1.5 gap-y-1">
+              <span className="text-[30px] font-semibold leading-none tracking-[-0.02em] text-ink tabular-nums">
+                {formatIDR(plan.price)}
+              </span>
+              <span className="text-[13.5px] text-mute">{plan.priceSuffix}</span>
             </p>
           )}
         </div>
 
-        <p className="mt-3 rounded-lg bg-[#F5F8FD] px-2.5 py-2 text-[11px] leading-snug text-[#64748B]">
-          <span className="font-semibold text-[#475569]">Cocok untuk: </span>
+        <p className="mt-4 text-[13.5px] leading-relaxed text-body">
+          <span className="font-semibold text-ink">Cocok untuk: </span>
           {plan.bestFor}
         </p>
 
-        <ul className="mt-4 flex-1 space-y-2">
+        <ul className="mt-5 flex-1 space-y-2.5 border-t border-line pt-5">
           {plan.specs.map((spec) => (
-            <li key={spec} className="flex items-start gap-2 text-[11.5px] leading-snug text-[#475569]">
-              <span
-                className="mt-[3px] grid h-3.5 w-3.5 shrink-0 place-items-center rounded-full"
-                style={{ background: `${plan.accent}24`, color: plan.accent }}
-              >
-                <Check className="h-2 w-2" strokeWidth={3.5} />
-              </span>
+            <li key={spec} className="flex items-start gap-2.5 text-[14px] leading-snug text-body">
+              <Check className="mt-[3px] h-3.5 w-3.5 shrink-0 text-ink" strokeWidth={2.5} />
               {spec}
             </li>
           ))}
           {plan.notIncluded.map((spec) => (
-            <li key={spec} className="flex items-start gap-2 text-[11px] leading-snug text-[#64748B] line-through decoration-[#C5D0E4]">
-              <span className="mt-[3px] grid h-3.5 w-3.5 shrink-0 place-items-center rounded-full bg-[#F5F8FD]">
-                <Minus className="h-2 w-2" strokeWidth={3} />
+            <li key={spec} className="flex items-start gap-2.5 text-[14px] leading-snug text-faint">
+              <Minus className="mt-[3px] h-3.5 w-3.5 shrink-0" strokeWidth={2.5} />
+              <span>
+                <span className="sr-only">Tidak termasuk: </span>
+                {spec}
               </span>
-              {spec}
             </li>
           ))}
         </ul>
@@ -92,22 +95,17 @@ function PlanCard({ plan }) {
             selectPlan(plan.id)
             scrollToSection('domain')
           }}
-          className={`pointer-events-auto mt-5 inline-flex w-full items-center justify-center gap-1.5 rounded-lg px-3 py-2.5 text-[12px] font-bold transition ${
-            selected
-              ? 'bg-gradient-to-br from-[#0B1F3F] to-[#1E40AF] text-white hover:brightness-125'
-              : 'border border-[#DDE5F3] bg-[#F5F8FD] text-[#0B1F3F] hover:border-[#C5D0E4] hover:bg-[#E8EEFA]'
-          }`}
+          className={`btn pointer-events-auto mt-6 w-full ${selected ? 'btn-primary' : 'btn-secondary'}`}
         >
           {selected ? (
             <>
-              <Check className="h-3.5 w-3.5" strokeWidth={3} />
-              Paket Terpilih
+              Lanjut dengan paket ini
+              <ArrowRight className="h-4 w-4" />
             </>
+          ) : isCustom ? (
+            'Konsultasi Custom'
           ) : (
-            <>
-              {isCustom ? <MessageCircle className="h-3.5 w-3.5" /> : <CreditCard className="h-3.5 w-3.5" />}
-              {isCustom ? 'Konsultasi Custom' : 'Pilih Paket Ini'}
-            </>
+            'Pilih Paket Ini'
           )}
         </button>
       </div>
@@ -123,74 +121,61 @@ export default function PricingSection() {
     : formatIDR(orderTotal)
 
   return (
-    <section id="paket" className="relative scroll-mt-20 px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
-      <div className="mx-auto w-full max-w-7xl">
-        <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-          <div className="max-w-2xl">
-            <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#2F5BEA]">Langkah 1</span>
-            <h2 className="mt-2.5 text-[26px] font-extrabold leading-tight tracking-tight text-[#0B1F3F] sm:text-[34px]">
-              Pilih paket sesuai kebutuhan website Anda
-            </h2>
-            <p className="mt-3 text-[14px] leading-relaxed text-[#64748B]">
-              Harga setup sekali bayar, sudah termasuk aktivasi, SSL, dan penyambungan
-              domain. Tidak ada biaya tersembunyi — Anda bisa upgrade kapan saja.
-            </p>
-          </div>
-          <a
-            href="#domain"
-            className="inline-flex shrink-0 items-center gap-1.5 rounded-xl border border-[#DDE5F3] bg-[#F5F8FD] px-4 py-2.5 text-[12.5px] font-semibold text-[#334155] transition hover:border-[#DDE5F3] hover:bg-[#E8EEFA]"
-          >
-            Sudah tahu paketnya? Lanjut ke domain
-            <ArrowUpRight className="h-3.5 w-3.5" />
-          </a>
-        </div>
+    <section id="paket" className="section bg-white">
+      <div className="container-page">
+        <SectionHeader
+          label="Langkah 1 · Paket"
+          title="Pilih paket sesuai kebutuhan website Anda"
+          aside={
+            <a href="#domain" className="link-quiet inline-flex items-center gap-1.5">
+              Sudah tahu paketnya? Lanjut ke domain
+              <ArrowRight className="h-3.5 w-3.5" />
+            </a>
+          }
+        >
+          Harga setup sekali bayar, sudah termasuk aktivasi, SSL, dan penyambungan domain. Tidak
+          ada biaya tersembunyi, dan Anda bisa upgrade kapan saja.
+        </SectionHeader>
 
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {PLANS.map((plan) => (
             <PlanCard key={plan.id} plan={plan} />
           ))}
         </div>
 
         {/* Add-on opsional: Payment Gateway & QRIS Otomatis (Step 1) */}
-        <div
-          id="addon-pembayaran"
-          className="mt-5 scroll-mt-24 rounded-2xl border border-[#DDE5F3] bg-[#F5F8FD] p-3 sm:p-4"
-        >
-          <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1.5 px-1">
-            <p className="text-[10.5px] font-bold uppercase tracking-[0.18em] text-[#64748B]">
-              Add-on opsional · tidak wajib
-            </p>
-            <p className="text-[11px] text-[#64748B]">
+        <div id="addon-pembayaran" className="mt-12 scroll-mt-24">
+          <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+            <h3 className="text-[18px] font-semibold text-ink">
+              Add-on opsional
+              <span className="ml-2 text-[14px] font-normal text-mute">tidak wajib</span>
+            </h3>
+            <p className="text-[14px] text-mute">
               {plan.name}
               {includePaymentGateway ? ' + add-on QRIS' : ' tanpa add-on'}
-              <span className="mx-1.5 text-[#94A3B8]">=</span>
-              <span
-                data-pricing-live-total
-                className={`font-extrabold ${includePaymentGateway ? 'text-[#0B1F3F]' : 'text-[#0B1F3F]'}`}
-              >
+              <span className="mx-1.5">=</span>
+              <span data-pricing-live-total className="font-semibold text-ink tabular-nums">
                 {liveTotal}
               </span>
             </p>
           </div>
 
-          <PaymentGatewayToggle className="mt-2.5" />
+          <PaymentGatewayToggle className="mt-4" />
 
-          <p className="mt-2.5 px-1 text-[10.5px] leading-snug text-[#64748B]">
+          <p className="mt-3 text-[13px] leading-relaxed text-mute">
             {PAYMENT_ADDON.footnote} Tanpa add-on, seluruh paket sudah termasuk checkout via WhatsApp
             dengan konfirmasi pembayaran manual oleh tim FRWeb.
           </p>
         </div>
 
-        <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 rounded-xl border border-[#DDE5F3] bg-[#F5F8FD] px-4 py-3 text-[11.5px] text-[#64748B]">
-          {['Invoice resmi & pembayaran transfer/QRIS', 'Garansi revisi konten 7 hari', 'Domain & hosting atas nama Anda'].map(
-            (item) => (
-              <span key={item} className="inline-flex items-center gap-1.5">
-                <Check className="h-3.5 w-3.5 text-[#0B1F3F]" strokeWidth={3} />
-                {item}
-              </span>
-            ),
-          )}
-        </div>
+        <ul className="mt-10 flex flex-wrap gap-x-8 gap-y-2 border-t border-line pt-6">
+          {ASSURANCES.map((item) => (
+            <li key={item} className="inline-flex items-center gap-2 text-[14px] text-body">
+              <Check className="h-4 w-4 text-ink" strokeWidth={2.5} />
+              {item}
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   )
