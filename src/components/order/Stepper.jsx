@@ -72,7 +72,7 @@ export default function Stepper({ className = '' }) {
               type="button"
               onClick={() => scrollToSection(step.target)}
               aria-current={isActive ? 'step' : undefined}
-              className={`group block w-full border-t-2 pt-3.5 text-left transition-colors ${RULE[state]}`}
+              className={`group block w-full border-t-[3px] pt-3.5 text-left transition-colors ${RULE[state]}`}
             >
               <span className="flex items-center gap-2 text-[12.5px]">
                 <span className="font-mono text-mute">{step.number}</span>

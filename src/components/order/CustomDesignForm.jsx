@@ -82,12 +82,12 @@ export default function CustomDesignForm() {
                   aria-pressed={active}
                   data-feature-option={feature.id}
                   className={`flex items-start gap-3 rounded-lg border p-3.5 text-left transition-colors ${
-                    active ? 'border-ink bg-brand-wash/50 ring-1 ring-ink' : 'border-line-strong bg-white hover:border-ink/40'
+                    active ? 'border-brand bg-brand-wash ring-2 ring-brand' : 'border-line-strong bg-white hover:border-ink/40'
                   }`}
                 >
                   <span
                     className={`mt-0.5 grid h-[18px] w-[18px] shrink-0 place-items-center rounded border transition-colors ${
-                      active ? 'border-ink bg-ink text-white' : 'border-line-strong text-transparent'
+                      active ? 'border-brand bg-brand text-white' : 'border-line-strong bg-white text-transparent'
                     }`}
                     aria-hidden="true"
                   >

@@ -20,7 +20,7 @@ function PlanCard({ plan }) {
   return (
     <div
       className={`relative flex flex-col rounded-xl border p-6 transition-colors ${
-        selected ? 'border-ink bg-brand-wash/50 ring-1 ring-ink' : 'border-line-strong bg-white hover:border-ink/40'
+        selected ? 'border-brand bg-brand-wash ring-2 ring-brand' : 'border-line-strong bg-white hover:border-ink/40'
       }`}
     >
       <button
@@ -37,7 +37,7 @@ function PlanCard({ plan }) {
           <span
             aria-hidden="true"
             className={`mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full border transition-colors ${
-              selected ? 'border-ink bg-ink text-white' : 'border-line-strong text-transparent'
+              selected ? 'border-brand bg-brand text-white' : 'border-line-strong bg-white text-transparent'
             }`}
           >
             <Check className="h-3 w-3" strokeWidth={3.5} />
@@ -46,7 +46,7 @@ function PlanCard({ plan }) {
 
         <p className="mt-1.5 text-[14px] leading-snug text-mute">
           {plan.recommended && (
-            <span className="mr-2 rounded bg-brand-wash px-1.5 py-0.5 text-[11.5px] font-semibold tracking-wide text-brand">
+            <span className="mr-2 rounded bg-brand px-1.5 py-0.5 text-[11.5px] font-semibold tracking-wide text-white">
               {plan.badge}
             </span>
           )}

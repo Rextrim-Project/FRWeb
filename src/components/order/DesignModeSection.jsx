@@ -16,13 +16,13 @@ function ModeTab({ active, disabled, title, meta, onClick, controls, id }) {
       disabled={disabled}
       onClick={onClick}
       className={`flex items-start gap-3 rounded-xl border p-4 text-left transition-colors sm:p-5 ${
-        active ? 'border-ink bg-brand-wash/50 ring-1 ring-ink' : 'border-line-strong bg-white hover:border-ink/40'
+        active ? 'border-brand bg-brand-wash ring-2 ring-brand' : 'border-line-strong bg-white hover:border-ink/40'
       } ${disabled ? 'cursor-not-allowed opacity-50 hover:border-line-strong' : ''}`}
     >
       <span
         aria-hidden="true"
         className={`mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full border transition-colors ${
-          active ? 'border-ink bg-ink text-white' : 'border-line-strong text-transparent'
+          active ? 'border-brand bg-brand text-white' : 'border-line-strong bg-white text-transparent'
         }`}
       >
         <Check className="h-3 w-3" strokeWidth={3.5} />

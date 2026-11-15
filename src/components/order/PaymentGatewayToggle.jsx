@@ -23,7 +23,7 @@ export default function PaymentGatewayToggle({ className = '', compact = false }
       className={`group w-full rounded-xl border text-left transition-colors ${
         compact ? 'p-4' : 'p-5 sm:p-6'
       } ${
-        includePaymentGateway ? 'border-ink bg-brand-wash/50 ring-1 ring-ink' : 'border-line-strong bg-white hover:border-ink/40'
+        includePaymentGateway ? 'border-brand bg-brand-wash ring-2 ring-brand' : 'border-line-strong bg-white hover:border-ink/40'
       } ${className}`}
     >
       <div className="flex items-start gap-4">

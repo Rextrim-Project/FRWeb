@@ -53,7 +53,7 @@ export default function CtaSection() {
                 <button
                   type="button"
                   onClick={() => scrollToSection(nextTarget)}
-                  className="btn btn-lg bg-white text-ink hover:bg-white/90"
+                  className="btn btn-lg bg-white text-ink hover:bg-sky"
                 >
                   Lanjutkan order
                   <ArrowRight className="h-4 w-4" />

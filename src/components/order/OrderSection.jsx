@@ -201,9 +201,9 @@ export default function OrderSection() {
 
           <div className="min-w-0 lg:sticky lg:top-24">
             <div className="rounded-xl border border-line-strong bg-white shadow-[0_16px_40px_-28px_rgba(15,26,43,0.3)]">
-              <div className="flex items-baseline justify-between gap-3 border-b border-line px-5 py-4 sm:px-6">
-                <h3 className="text-[18px] font-semibold text-ink">Detail pesanan</h3>
-                <span className="text-[13.5px] text-mute">
+              <div className="flex items-baseline justify-between gap-3 rounded-t-xl bg-ink px-5 py-4 sm:px-6">
+                <h3 className="text-[18px] font-semibold text-white">Detail pesanan</h3>
+                <span className="text-[13.5px] text-silver">
                   Estimasi {isCustomMode ? CUSTOM_TIMELINE : '± 30 menit'}
                 </span>
               </div>

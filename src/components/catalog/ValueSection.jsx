@@ -92,12 +92,12 @@ export default function ValueSection() {
 
         {/* Value proposition utama: paket = 2 antarmuka */}
         <div className="mt-12 overflow-hidden rounded-xl border border-line-strong">
-          <div className="flex flex-col gap-3 border-b border-line bg-wash px-6 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+          <div className="flex flex-col gap-3 bg-ink px-6 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-8">
             <div>
-              <h3 className="text-[18px] font-semibold text-ink">
+              <h3 className="text-[18px] font-semibold text-white">
                 Satu paket, dua antarmuka: Web Customer + Dashboard Admin
               </h3>
-              <p className="mt-1 text-[14.5px] text-body">
+              <p className="mt-1 text-[14.5px] text-silver">
                 Halaman untuk pelanggan Anda, dan panel untuk memantau pesanan, jadwal, serta
                 transaksi.
               </p>
@@ -105,7 +105,7 @@ export default function ValueSection() {
             <button
               type="button"
               onClick={() => scrollToSection('katalog')}
-              className="inline-flex shrink-0 items-center gap-1.5 self-start text-[14px] font-semibold text-brand underline-offset-4 hover:underline sm:self-auto"
+              className="inline-flex shrink-0 items-center gap-1.5 self-start text-[14px] font-semibold text-sky underline-offset-4 hover:underline sm:self-auto"
             >
               Coba keduanya di Live Demo
               <ArrowRight className="h-4 w-4" />

@@ -49,7 +49,7 @@ export default function ProcessSection() {
 
         <ol className="mt-12 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
           {STEPS.map(({ step, time, title, desc }) => (
-            <li key={step} className="border-t-2 border-ink pt-4">
+            <li key={step} className="border-t-[3px] border-brand pt-4">
               <p className="flex items-baseline justify-between gap-3 font-mono text-[13px]">
                 <span className="font-semibold text-brand">{step}</span>
                 <span className="text-mute">{time}</span>

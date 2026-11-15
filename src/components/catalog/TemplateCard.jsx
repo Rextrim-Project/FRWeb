@@ -14,7 +14,7 @@ export default function TemplateCard({ template, onSelect, selected = false }) {
   return (
     <article
       className={`group flex flex-col overflow-hidden rounded-xl border bg-white transition-colors ${
-        selected ? 'border-ink ring-1 ring-ink' : 'border-line-strong hover:border-ink/40'
+        selected ? 'border-brand ring-2 ring-brand' : 'border-line-strong hover:border-ink/40'
       }`}
     >
       <a
@@ -40,7 +40,7 @@ export default function TemplateCard({ template, onSelect, selected = false }) {
         )}
 
         {selected && (
-          <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-md bg-ink px-2.5 py-1 text-[12.5px] font-semibold text-white">
+          <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-md bg-brand px-2.5 py-1 text-[12.5px] font-semibold text-white">
             <Check className="h-3.5 w-3.5" strokeWidth={3} />
             Tema terpilih
           </span>
@@ -121,7 +121,7 @@ export default function TemplateCard({ template, onSelect, selected = false }) {
             type="button"
             onClick={() => onSelect(template)}
             aria-pressed={selected}
-            className={`btn btn-sm h-10 ${selected ? 'border border-ink bg-white text-ink' : 'btn-primary'}`}
+            className={`btn btn-sm h-10 ${selected ? 'border border-brand bg-brand-wash text-brand' : 'btn-primary'}`}
           >
             {selected && <Check className="h-4 w-4" strokeWidth={3} />}
             {selected ? 'Tema Terpilih' : 'Pilih Tema Ini'}

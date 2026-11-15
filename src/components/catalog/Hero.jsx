@@ -31,7 +31,9 @@ const SHOWCASE_TEMPLATES = SHOWCASE_IDS.map((id) => TEMPLATES.find((template) =>
 )
 
 export default function Hero() {
-  const { completedSteps } = useOrder()
+  const { completedSteps, checkoutReady } = useOrder()
+  // Langkah ke-4 (deploy) dihitung siap begitu order lengkap, selaras dengan Stepper.
+  const readySteps = completedSteps + (checkoutReady ? 1 : 0)
 
   const openFullscreenPreview = (template) => {
     if (template?.id) openPreviewRoute(template.id)
@@ -39,44 +41,44 @@ export default function Hero() {
 
   return (
     <section id="top" className="bg-white text-ink">
-      <div className="border-b border-line bg-wash px-4 sm:px-6 lg:px-8">
+      <div className="bg-navy px-4 text-white sm:px-6 lg:px-8">
       <div className="container-page grid items-center gap-12 pb-14 pt-10 sm:pt-14 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-16 lg:pb-20 lg:pt-20">
         <div className="min-w-0">
-          <p className="text-[14px] font-medium text-brand">Website instan untuk pemilik bisnis</p>
+          <p className="text-[14px] font-semibold text-sky">Website instan untuk pemilik bisnis</p>
 
-          <h1 className="mt-4 text-[38px] font-semibold leading-[1.04] tracking-[-0.028em] text-ink sm:text-[52px] xl:text-[60px]">
-            Website bisnis Anda online dalam <span className="text-brand">30&nbsp;menit.</span>
+          <h1 className="mt-4 text-[38px] font-semibold leading-[1.04] tracking-[-0.028em] text-white sm:text-[52px] xl:text-[60px]">
+            Website bisnis Anda online dalam <span className="text-sky">30&nbsp;menit.</span>
           </h1>
 
-          <p className="mt-5 max-w-xl text-[16.5px] leading-relaxed text-body">
+          <p className="mt-5 max-w-xl text-[16.5px] leading-relaxed text-silver">
             Pilih paket, tentukan domain, lalu pilih template atau ajukan desain custom. Hosting,
             SSL, dan instalasi kami yang urus, jadi website resmi bisnis Anda langsung bisa diakses
             pelanggan.
           </p>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-            <button type="button" onClick={() => scrollToSection('paket')} className="btn btn-lg btn-primary">
+            <button type="button" onClick={() => scrollToSection('paket')} className="btn btn-lg bg-white text-ink hover:bg-sky">
               Mulai dari pilih paket
               <ArrowRight className="h-4 w-4" />
             </button>
-            <button type="button" onClick={() => scrollToSection('katalog')} className="btn btn-lg btn-secondary">
+            <button type="button" onClick={() => scrollToSection('katalog')} className="btn btn-lg border border-white/30 text-white hover:bg-white/10">
               Lihat {TEMPLATES.length} template
             </button>
           </div>
 
           <ul className="mt-8 grid max-w-xl gap-x-6 gap-y-2.5 sm:grid-cols-2">
             {VALUES.map((value) => (
-              <li key={value} className="flex items-start gap-2.5 text-[14.5px] leading-snug text-body">
-                <Check className="mt-[3px] h-4 w-4 shrink-0 text-ink" strokeWidth={2.5} />
+              <li key={value} className="flex items-start gap-2.5 text-[14.5px] leading-snug text-white/90">
+                <Check className="mt-[3px] h-4 w-4 shrink-0 text-sky" strokeWidth={2.5} />
                 {value}
               </li>
             ))}
           </ul>
 
-          <p className="mt-7 flex items-center gap-2 text-[14px] text-mute">
+          <p className="mt-7 flex items-center gap-2 text-[14px] text-silver">
             <Star className="h-4 w-4 fill-[#E0A100] text-[#E0A100]" aria-hidden="true" />
             <span>
-              <span className="font-semibold text-ink">4.9</span> dari 120+ pemilik bisnis
+              <span className="font-semibold text-white">4.9</span> dari 120+ pemilik bisnis
             </span>
           </p>
         </div>
@@ -85,21 +87,21 @@ export default function Hero() {
           <HeroShowcase templates={SHOWCASE_TEMPLATES} onOpenFullscreen={openFullscreenPreview} />
         </div>
       </div>
-      </div>
 
-      <div className="px-4 sm:px-6 lg:px-8">
-      <dl className="container-page grid grid-cols-2 gap-x-6 gap-y-6 py-8 lg:grid-cols-4">
+      <dl className="container-page grid grid-cols-2 gap-x-6 gap-y-6 border-t border-white/15 py-8 lg:grid-cols-4">
         {STATS.map((stat) => (
           <div key={stat.label}>
-            <dt className="text-[14px] text-mute">{stat.label}</dt>
-            <dd className="mt-1 text-[26px] font-semibold leading-none tracking-[-0.02em] text-ink">
+            <dt className="text-[14px] text-silver">{stat.label}</dt>
+            <dd className="mt-1 text-[26px] font-semibold leading-none tracking-[-0.02em] text-white">
               {stat.value}
             </dd>
           </div>
         ))}
       </dl>
+      </div>
 
-      <div className="container-page border-t border-line pb-14 pt-8 lg:pb-16">
+      <div className="px-4 sm:px-6 lg:px-8">
+      <div className="container-page pb-14 pt-10 lg:pb-16">
         <div className="mb-5 flex flex-wrap items-baseline justify-between gap-2">
           <h2 className="text-[15px] font-semibold text-ink">
             Alur order
@@ -108,7 +110,7 @@ export default function Hero() {
             </span>
           </h2>
           <p className="text-[14px] text-mute">
-            <span className="font-semibold text-ink">{completedSteps}</span> dari 4 langkah siap
+            <span className="font-semibold text-ink">{readySteps}</span> dari 4 langkah siap
           </p>
         </div>
         <Stepper />

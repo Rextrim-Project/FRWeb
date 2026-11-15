@@ -99,7 +99,7 @@ export default function HeroShowcase({ templates = [], onOpenFullscreen, classNa
       onBlurCapture={() => setHovering(false)}
     >
       {/* Frame browser */}
-      <div className="overflow-hidden rounded-xl border border-line-strong bg-white shadow-[0_24px_48px_-32px_rgba(15,26,43,0.35)]">
+      <div className="overflow-hidden rounded-xl bg-white shadow-[0_30px_60px_-24px_rgba(0,0,0,0.6)] ring-1 ring-white/20">
         <div className="flex items-center gap-3 border-b border-line bg-wash px-3 py-2">
           <div
             className="flex min-w-0 flex-1 items-center gap-2 rounded-md border border-line bg-white px-2.5 py-1.5"
@@ -172,7 +172,7 @@ export default function HeroShowcase({ templates = [], onOpenFullscreen, classNa
                 aria-pressed={isActive}
                 aria-label={`Tampilkan pratinjau ${tpl.name} di hero`}
                 className={`relative shrink-0 overflow-hidden rounded-md px-3 py-2 text-[13.5px] font-medium whitespace-nowrap transition-colors ${
-                  isActive ? 'bg-wash text-ink' : 'text-mute hover:text-ink'
+                  isActive ? 'bg-white/12 text-white' : 'text-silver hover:text-white'
                 }`}
               >
                 {tplLabel}
@@ -180,7 +180,7 @@ export default function HeroShowcase({ templates = [], onOpenFullscreen, classNa
                   <span
                     aria-hidden="true"
                     key={`${tpl.id}-${index}`}
-                    className="animate-rotate-progress absolute inset-x-0 bottom-0 h-[2px] origin-left bg-ink"
+                    className="animate-rotate-progress absolute inset-x-0 bottom-0 h-[2px] origin-left bg-sky"
                     style={{ animationPlayState: hovering || !autoPlay ? 'paused' : 'running' }}
                   />
                 ) : null}
@@ -195,14 +195,14 @@ export default function HeroShowcase({ templates = [], onOpenFullscreen, classNa
           aria-pressed={autoPlay}
           aria-label={autoPlay ? 'Jeda rotasi otomatis' : 'Mulai rotasi otomatis'}
           title={autoPlay ? 'Jeda rotasi otomatis' : 'Mulai rotasi otomatis'}
-          className="grid h-8 w-8 shrink-0 place-items-center rounded-md border border-line-strong text-body transition-colors hover:bg-wash hover:text-ink"
+          className="grid h-8 w-8 shrink-0 place-items-center rounded-md border border-white/25 text-white transition-colors hover:bg-white/10"
         >
           {autoPlay ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
         </button>
       </div>
 
-      <p className="mt-2 text-[13px] leading-relaxed text-mute">
-        Ini halaman asli template <span className="font-medium text-ink">{active.name}</span> yang
+      <p className="mt-2 text-[13px] leading-relaxed text-silver">
+        Ini halaman asli template <span className="font-medium text-white">{active.name}</span> yang
         berjalan langsung, bukan gambar.
       </p>
     </div>
