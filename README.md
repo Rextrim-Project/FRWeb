@@ -18,7 +18,7 @@ sebagai pesan WhatsApp yang sudah terformat.
 | Ikon | `lucide-react` (dipusatkan di `src/lib/icons.jsx`) |
 | State order | React Context + `localStorage` (`frcloud:order:v1`) |
 | Lint | oxlint (`npm run lint`) |
-| Deploy | GitHub Actions → GitHub Pages (`https://smittywerbenn.github.io/FRWeb/`) |
+| Deploy | GitHub Actions → GitHub Pages (`https://rextrim-project.github.io/FRWeb/`) |
 
 ## Fitur
 
@@ -115,7 +115,7 @@ Live sekarang: **https://frel.cloud/** (custom domain)
    - `CNAME www → <username>.github.io`
 4. Aktifkan **Enforce HTTPS** setelah sertifikat terbit.
 
-Catatan: repo ini juga bisa dibuka di `https://smittywerbenn.github.io/FRWeb/` hanya bila
+Catatan: repo ini juga bisa dibuka di `https://rextrim-project.github.io/FRWeb/` hanya bila
 `base` diubah ke `/FRWeb/` (mis. env `VITE_BASE=/FRWeb/` saat build). Jangan dicampur dengan
 custom domain — aset akan 404 dan halaman tampil kosong (whitescreen).
 
